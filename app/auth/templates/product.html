@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block app_content %}
+<table class="table table-hover">
+
+  <tr>
+    <td align="center"><h3>{{ product.product_name }}</h3></td>
+  </tr>
+
+  <tr>
+    <td>
+
+      <table>
+        <tr>
+          <td>
+            <table>
+              <tr>
+                <td><img src="{{ url_for('static', filename = image) }}" alt="Product" width="330" height="330" class="img-fluid img-thumbnail"></td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <nav aria-label="...">
+                    <ul class="pager">
+                      <li class="previous{% if not prev_image %} disabled{% endif %}">
+                        <a href="{{ prev_image or '#' }}">
+                          <span aria-hidden="true">&larr;</span>
+                        </a>
+                      </li>
+                      <li class="next{% if not next_image %} disabled{% endif %}">
+                        <a href="{{ next_image or '#' }}">
+                           <span aria-hidden="true">&rarr;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+          <td>
+              Id: {{ product.id }}<br>
+            <br>
+            Description:<br> {{ product.product_description }}<br>
+        <br>
+        Time: {{ moment(product.timestamp).format('LL') }}<br>
+            </table>
+          </td>
+
+  {% if user == current_user %}
+  <tr>
+    <td align="center">
+      <a href="{{ url_for('auth.delete', id=product.id) }}">Delete ad?</a>
+    </td>
+  </tr>
+  {% endif %}
+
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td width="50px">
+            <img src="{{ url_for('static', filename = '/avatars/{}.jpg'.format(product.author.id)) }}" alt="Product" width="50" height="50" class="img-circle">
+          </td>
+          <td>Author:<br>
+          <a href="{{ url_for('auth.profile', username=product.author.username) }}">{{ product.author.username }}</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td align="left"><br>
+      </td>
+  </tr>
+
+</table>
+{% endblock %}

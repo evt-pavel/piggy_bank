@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block app_content %}
+<table class="table table-hover">
+    <tr>
+        {% if user == current_user %}
+        <td width="70px"><a href="{{ url_for('auth.upload') }}"><img src="{{ url_for('static', filename = avatar) }}" width="200" height="200" class="img-circle" alt="Avatar" ></a></td>
+        {% else %}
+        <td width="70px"><img src="{{ url_for('static', filename = avatar) }}" width="200" height="200" class="img-circle" alt="Avatar" ></td>
+        {% endif %}
+        <td><h1>{{ user.username }}</h1>
+        <p>Email: {{ user.email }}</p>
+        <p>Phone number: {{ user.phone }}</p>
+            {% if user == current_user %}
+        <p><form action="/change_info">
+                <button class="btn btn-primary" type="submit">Change info</button></form></p>
+        {% endif %}
+        </td>
+    </tr>
+</table>
+
+<hr>
+<div align="center">
+    {% if user == current_user %}
+    <form action="/create_ad" method="GET">
+        <button class="btn btn-primary" type="submit">Create Ad</button>
+    </form>
+    {% endif %}
+</div>
+<p></p>
+
+<div align="center">
+    {% for product in products %}
+        {% include '_product.html' %}
+    {% endfor %}
+</div>
+{% endblock %}
