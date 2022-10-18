@@ -25,6 +25,15 @@
                           <span aria-hidden="true">&larr;</span>
                         </a>
                       </li>
+                      <li>
+                        {% if user == current_user %}
+                        <a href="{{ url_for('auth.delete', id=product.id) }}">Delete ad?</a>
+                        {% elif not current_user.is_favourite(product) %}
+                        <a href="{{ url_for('auth.follow', product_id = product.id) }}">Add to favourite</a>
+                        {% else %}
+                        <a href="{{ url_for('auth.unfollow', product_id = product.id) }}">Remove from favourite</a>
+                        {% endif %}
+                      </li>
                       <li class="next{% if not next_image %} disabled{% endif %}">
                         <a href="{{ next_image or '#' }}">
                            <span aria-hidden="true">&rarr;</span>

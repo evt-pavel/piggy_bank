@@ -83,7 +83,13 @@ class CreateAd(FlaskForm):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-########################################## базы данных ################################################
+#  базы данных
+
+
+favourites = db.Table('favourites',
+                      db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                      db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True)
+                      )
 
 
 class User(UserMixin, db.Model):
@@ -93,6 +99,19 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String(128))
     products = db.relationship('Product', backref='author', lazy='dynamic')
+    favourites = db.relationship('Product', secondary=favourites, lazy='dynamic',
+                                 backref=db.backref('followers', lazy='dynamic'))
+
+    def add_to_favourite(self, product):
+        if not self.is_favourite(product):
+            self.favourites.append(product)
+
+    def remove_from_favourite(self, product):
+        if self.is_favourite(product):
+            self.favourites.remove(product)
+
+    def is_favourite(self, product):
+        return self.favourites.filter_by(id=product.id).count() > 0
 
     def __repr__(self):
         return '<User {}'.format(self.username)

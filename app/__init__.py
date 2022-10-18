@@ -21,9 +21,9 @@ login.login_message = "You must be logged in to visit that page!"
 def create_app(class_config=Config):
 
     app = Flask(__name__)
-    port = 5000
-    public_url = ngrok.connect(port).public_url
-    print(" * ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}\"".format(public_url, port))
+    # port = 5000
+    # public_url = ngrok.connect(port).public_url
+    # print(" * ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}\"".format(public_url, port))
     app.config.from_object(Config)
     db.init_app(app)
     migrate.init_app(app, db)

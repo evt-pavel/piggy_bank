@@ -142,3 +142,23 @@ def delete(id):
     db.session.commit()
     flash('You removed the ad!')
     return redirect(url_for('auth.profile', username=current_user.username))
+
+
+@auth.route('/follow/product/<int:product_id>')
+@login_required
+def follow(product_id):
+    product = Product.query.get(product_id)
+    current_user.add_to_favourite(product)
+    db.session.commit()
+    flash('Product add to favourite')
+    return redirect(url_for('auth.open_product', id=product_id))
+
+
+@auth.route('/unfollow/product/<int:product_id>')
+@login_required
+def unfollow(product_id):
+    product = Product.query.get(product_id)
+    current_user.remove_from_favourite(product)
+    db.session.commit()
+    flash('Product remove from favourites')
+    return redirect(url_for('.profile', username=current_user.username))
