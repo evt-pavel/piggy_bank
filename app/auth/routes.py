@@ -54,8 +54,16 @@ def registration():
 def profile(username):
     user = User.query.filter_by(username=username).first()
     avatar = '/avatars/' + str(user.id) + '.jpg'
-    products = Product.query.filter_by(author=user).all()
-    return render_template('profile.html', user=user, avatar=avatar, products=products)
+    products = []
+    my_len = Product.query.filter_by(author=user).count()
+    fav_len = current_user.favourites.count()
+    if 'my' in request.form:
+        products = Product.query.filter_by(author=user).all()
+    elif 'favourites' in request.form:
+        products = current_user.favourites
+    elif user != current_user:
+        products = Product.query.filter_by(author=user).all()
+    return render_template('profile.html', user=user, avatar=avatar, products=products, my_len=my_len, fav_len=fav_len)
 
 
 @auth.route('/upload', methods=['GET', 'POST'])

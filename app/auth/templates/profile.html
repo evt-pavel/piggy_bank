@@ -11,21 +11,38 @@
         <p>Email: {{ user.email }}</p>
         <p>Phone number: {{ user.phone }}</p>
             {% if user == current_user %}
-        <p><form action="/change_info">
-                <button class="btn btn-primary" type="submit">Change info</button></form></p>
+        <form action="/change_info">
+                <button class="btn btn-primary" type="submit">Change info</button></form>
         {% endif %}
         </td>
     </tr>
 </table>
 
 <hr>
-<div align="center">
-    {% if user == current_user %}
-    <form action="/create_ad" method="GET">
-        <button class="btn btn-primary" type="submit">Create Ad</button>
-    </form>
-    {% endif %}
-</div>
+<table align="center">
+    <tr>
+        {% if user == current_user %}
+        <td>
+            <form action="/profile/{{ user.username }}" method="POST">
+                <button class="btn btn-primary" type="submit" name="my" value="my">My Adds ({{ my_len }})</button>
+            </form>
+        </td>
+        <td>
+            <form action="/create_ad" method="GET">
+                <button class="btn btn-primary" type="submit">Create Add</button>
+            </form>
+        </td>
+        <td>
+            <form action="/profile/{{ user.username }}" method="POST">
+                <button class="btn btn-primary" type="submit" name="favourites" value="favourites">
+                    Favourite ({{ fav_len }})</button>
+            </form>
+        </td>
+    </tr>
+        {% else %}
+            <h3 align="center">Все объявления автора:</h3>
+        {% endif %}
+</table>
 <p></p>
 
 <div align="center">

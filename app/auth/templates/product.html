@@ -55,14 +55,6 @@
             </table>
           </td>
 
-  {% if user == current_user %}
-  <tr>
-    <td align="center">
-      <a href="{{ url_for('auth.delete', id=product.id) }}">Delete ad?</a>
-    </td>
-  </tr>
-  {% endif %}
-
   <tr>
     <td>
       <table>
