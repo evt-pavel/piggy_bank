@@ -26,12 +26,15 @@
                         </a>
                       </li>
                       <li>
-                        {% if user == current_user %}
-                        <a href="{{ url_for('auth.delete', id=product.id) }}">Delete ad?</a>
-                        {% elif not current_user.is_favourite(product) %}
-                        <a href="{{ url_for('auth.follow', product_id = product.id) }}">Add to favourite</a>
+                        {% if current_user.is_anonymous %}
                         {% else %}
-                        <a href="{{ url_for('auth.unfollow', product_id = product.id) }}">Remove from favourite</a>
+                            {% if user == current_user %}
+                            <a href="{{ url_for('auth.delete', id=product.id) }}">Delete ad?</a>
+                            {% elif not current_user.is_favourite(product) %}
+                            <a href="{{ url_for('auth.follow', product_id = product.id) }}">Add to favourite</a>
+                            {% else %}
+                            <a href="{{ url_for('auth.unfollow', product_id = product.id) }}">Remove from favourite</a>
+                            {% endif %}
                         {% endif %}
                       </li>
                       <li class="next{% if not next_image %} disabled{% endif %}">
